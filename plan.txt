@@ -1,0 +1,101 @@
+1. spravit skript/automatizaciu na
+    runnutie ollama smoll a toho frasu ktory
+    mi konvertuje veci do floatov  [X]
+
+2. Urobit pdf do textu a ulozit ho na pc
+
+3. Urobit ten text do overlay chunkov
+
+4. Paralelne mozno hitovat endpoint
+    na llm aby sme kazdy chunk dali do floatov
+    vytvorit payload pre db
+
+5. Ulozenie do databazy dajakej
+    napriklad Qdrant tie apis by 
+    ti mali by schopne ryhlo najst float 
+    vektorov a namapujes metadata na text
+
+6. text posles spolocne s user inputom
+    do llm pomocou microsoft extensions AI
+
+
+
+----------------
+
+phi3
+
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+docker exec -it ollama ollama pull phi3
+
+
+curl http://localhost:11434/v1/chat/completions   -H "Content-Type: application/json"   -d '{
+    "model": "smollm",
+    "messages": [
+      {"role": "user", "content": "Hello, how are you?"}
+    ]
+  }'
+
+curl http://localhost:11434/v1/embeddings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "smollm",
+    "input": "Hello world"
+  }'
+
+
+  qdrant
+
+   docker run -d   --name qdrant   -p 6333:6333   -v qdrant_storage:/qdrant/storage   qdrant/qdrant
+
+
+2. Create collection
+curl -X PUT "http://localhost:6333/collections/mycollection" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vectors": {"size": 768, "distance": "Cosine"}
+  }'
+
+
+For small tests, you can set size: 3 or any dimension.
+
+3. Insert points
+curl -X POST "http://localhost:6333/collections/mycollection/points" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "points": [
+      {
+        "id": 1,
+        "vector": [0.1, 0.5, -0.2],
+        "payload": {"text":"Hello world", "category":"example"}
+      }
+    ]
+  }'
+
+
+vector → match collection size
+
+payload → your metadata
+
+id → unique identifier
+
+4. Search by vector
+curl -X POST "http://localhost:6333/collections/mycollection/points/search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [0.1, 0.5, -0.2],
+    "limit": 10,
+    "with_payload": true
+  }'
+
+
+Returns nearest points with payload and score.
+
+5. List collections
+curl http://localhost:6333/collections
+
+6. Get collection details
+curl http://localhost:6333/collections/mycollection
+
+7. Delete collection
+curl -X DELETE "http://localhost:6333/collections/mycollection"
