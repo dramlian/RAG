@@ -1,3 +1,6 @@
+using System.Text;
+using UglyToad.PdfPig;
+
 public class PdfService
 {
     private readonly string _pdfPath;
@@ -9,13 +12,19 @@ public class PdfService
 
     public string ConvertTheDocumentToText()
     {
-        string folderPath = System.IO.Path.GetDirectoryName(_pdfPath)
-            ?? throw new Exception("No path for document found");
-        /*
-        the logic
-        */
-        return folderPath;
+        if (!File.Exists(_pdfPath))
+            throw new FileNotFoundException("PDF not found: " + _pdfPath);
 
+        var sb = new StringBuilder();
+
+        using (var pdf = PdfDocument.Open(_pdfPath))
+        {
+            foreach (var page in pdf.GetPages())
+            {
+                sb.AppendLine(page.Text);
+            }
+        }
+
+        return sb.ToString();
     }
-
 }
