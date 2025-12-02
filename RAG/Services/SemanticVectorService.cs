@@ -1,11 +1,11 @@
-public class SemanticVectorService
+public class SemanticVectorService : ISemanticVectorService
 {
-    private readonly HttpClientService _httpClientService;
+    private readonly IHttpClientService _httpClientService;
     private readonly IEnumerable<string> _chunksPlainText;
     private readonly string _ollamaServiceUrl;
     private readonly string _ollamaModel;
 
-    public SemanticVectorService(HttpClientService httpCLientService, IEnumerable<string> chunksPlainText)
+    public SemanticVectorService(IHttpClientService httpCLientService, IEnumerable<string> chunksPlainText)
     {
         _httpClientService = httpCLientService;
         _chunksPlainText = chunksPlainText;

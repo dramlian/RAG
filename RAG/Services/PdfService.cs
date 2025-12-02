@@ -1,7 +1,7 @@
 using System.Text;
 using UglyToad.PdfPig;
 
-public class PdfService
+public class PdfService : IPdfService
 {
     private readonly string _pdfPath;
 

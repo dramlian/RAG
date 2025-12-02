@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-public class HttpClientService : IDisposable
+public class HttpClientService : IDisposable, IHttpClientService
 {
     private readonly HttpClient _httpClient;
 

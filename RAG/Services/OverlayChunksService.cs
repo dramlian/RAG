@@ -1,4 +1,4 @@
-public class OverLayChunksService
+public class OverLayChunksService : IOverLayChunksService
 {
     private readonly string _documentContent;
 
