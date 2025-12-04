@@ -9,8 +9,8 @@ HttpClient client = new HttpClient();
 
 HttpClientService httpClientService = new HttpClientService(client);
 
-SemanticVectorService semanticVectorService = new SemanticVectorService(httpClientService, chunks);
-var QdrantDto = await semanticVectorService.GetSemanticVectors();
+SemanticVectorService semanticVectorService = new SemanticVectorService(httpClientService);
+var QdrantDto = await semanticVectorService.GetSemanticVectors(chunks);
 
 
 
