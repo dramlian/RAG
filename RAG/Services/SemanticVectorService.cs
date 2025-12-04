@@ -24,11 +24,10 @@ public class SemanticVectorService : ISemanticVectorService
         return new QdrantDto(textToVectors);
     }
 
-    public async Task<(string, float[])> GetSemanticVectors(string input)
+    public async Task<float[]> GetSemanticVector(string input)
     {
         var payload = new OllamaInputDto(_ollamaModel, input);
         var output = await _httpClientService.PostAsync<OllamaOutputDto>(_ollamaServiceUrl, payload);
-        var numbers = output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
-        return (input, numbers);
+        return output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
     }
 }

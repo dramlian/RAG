@@ -2,32 +2,19 @@
 var text = pdfService.ConvertTheDocumentToText();
 
 OverLayChunksService overLayChunksService = new OverLayChunksService(text);
-
 var chunks = overLayChunksService.GetOverLayedChunks(5);
 
-HttpClient client = new HttpClient();
 
-HttpClientService httpClientService = new HttpClientService(client);
-
+HttpClientService httpClientService = new HttpClientService(new HttpClient());
 SemanticVectorService semanticVectorService = new SemanticVectorService(httpClientService);
 var QdrantDto = await semanticVectorService.GetSemanticVectors(chunks);
 
+IQdrantService qdrantService = new QdrantService("module_collection", 2048);
+await qdrantService.DeleteCollection();
+await qdrantService.CreateCollection();
+await qdrantService.UpdateInsertPoints(QdrantDto.points);
 
-
-IQdrantService service = new QdrantService("module_collection", 2048);
-
-await service.DeleteCollection();
-await service.CreateCollection();
-
-
-await service.UpdateInsertPoints(QdrantDto.points);
-
-var queryVector = Enumerable.Range(1, 2048).Select(_ => (float)new Random().NextDouble()).ToArray();
-var returned = await service.SearchForPoints(2, queryVector);
-
-foreach (var point in returned)
-{
-  Console.WriteLine(point);
-}
-
+IPromptService promptService = new PromptService(qdrantService, semanticVectorService);
+var finalPrompt = await promptService.CreateCustomQuery("When does the Monopoly game end?");
+Console.WriteLine(finalPrompt);
 
