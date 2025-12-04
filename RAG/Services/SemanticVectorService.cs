@@ -15,12 +15,12 @@ public class SemanticVectorService : ISemanticVectorService
 
     public async Task<QdrantDto> GetSemanticVectors()
     {
-        var textToVectors = new List<(string, IEnumerable<double>)>();
+        var textToVectors = new List<(string, float[])>();
         foreach (var inputChunk in _chunksPlainText)
         {
             var payload = new OllamaInputDto(_ollamaModel, inputChunk);
             var output = await _httpClientService.PostAsync<OllamaOutputDto>(_ollamaServiceUrl, payload);
-            var numbers = output?.data?.FirstOrDefault()?.embedding ?? Enumerable.Empty<double>();
+            var numbers = output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
             textToVectors.Add((inputChunk, numbers));
         }
         return new QdrantDto(textToVectors);

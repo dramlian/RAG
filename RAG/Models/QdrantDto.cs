@@ -1,31 +1,22 @@
+using Qdrant.Client.Grpc;
+
 public class QdrantDto
 {
-    public QdrantDto(IEnumerable<(string, IEnumerable<double>)> input)
+    public List<PointStruct> points;
+    public QdrantDto(List<(string, float[])> inputs)
     {
-        points = input.Select((item, index) => new Point
+        points = new List<PointStruct>();
+        for (int i = 0; i < inputs.Count(); i++)
         {
-            id = index,
-            vector = item.Item2.ToList(),
-            payload = new Payload
+            points.Add(new PointStruct
             {
-                text = item.Item1,
-                category = "default"
+                Id = (ulong)i,
+                Vectors = inputs[i].Item2,
+                Payload =
+                {
+                ["text"] = inputs[i].Item1,
             }
-        }).ToList();
-    }
-
-    public IEnumerable<Point> points;
-
-    public class Payload
-    {
-        public string? text;
-        public string? category;
-    }
-
-    public class Point
-    {
-        public int id;
-        public IReadOnlyCollection<double>? vector;
-        public Payload? payload;
+            });
+        }
     }
 }

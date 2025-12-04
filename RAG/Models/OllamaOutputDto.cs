@@ -1,6 +1,6 @@
 public class Datum
 {
-    public List<double>? embedding { get; set; }
+    public float[]? embedding { get; set; }
 }
 
 public class OllamaOutputDto
