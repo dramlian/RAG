@@ -14,9 +14,9 @@ public class PromptService : IPromptService
     public async Task<string> CreateCustomQuery(string query)
     {
         var vector = await _semanticVectorService.GetSemanticVector(query);
-        IEnumerable<ScoredPoint> returned = await _qdrantService.SearchForPoints(5, vector);
-        var returnedText = String.Join(", ", returned.SelectMany(x => x.Payload.Values.Select(y => y.StringValue)));
-        return $"ANSWER THIS QUESTION  regarding parsed monopoly text'{query}' . I am providing you hints from which you shall get the needed data to answer it properly, here they are : '{returnedText}' . YOUR ANSWER NEEDS TO BE MAXIMUM OF 1 SENTENCE LONG";
+        var returned = await _qdrantService.SearchForPoints(3, vector);
+        var foundChunks = returned.SelectMany(x => x.Payload.Values.Select(y => y.StringValue)).ToArray();
+        return $"You must answer only using the context below. If the context does not contain the answer, say “The context does not provide this information.” Context: <<<{foundChunks[0]} {foundChunks[1]} {foundChunks[2]}>>> Question: {query}";
     }
 
 }

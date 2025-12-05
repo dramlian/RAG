@@ -15,8 +15,10 @@ await qdrantService.CreateCollection();
 await qdrantService.UpdateInsertPoints(QdrantDto.points);
 
 IPromptService promptService = new PromptService(qdrantService, semanticVectorService);
-var finalPrompt = await promptService.CreateCustomQuery("What happens to a bankrupt player’s properties?");
+var finalPrompt = await promptService.CreateCustomQuery("When does the game end?");
 
 IOllamaService ollamaService = new OllamaService(httpClientService);
+Console.WriteLine(finalPrompt);
+Console.WriteLine("----------------------------------------------");
 Console.WriteLine(await ollamaService.GetAnswer(finalPrompt));
 
