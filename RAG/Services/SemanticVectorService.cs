@@ -16,8 +16,8 @@ public class SemanticVectorService : ISemanticVectorService
         var textToVectors = new List<(string, float[])>();
         foreach (var inputChunk in chunksPlainText)
         {
-            var payload = new OllamaInputDto(_ollamaModel, inputChunk);
-            var output = await _httpClientService.PostAsync<OllamaOutputDto>(_ollamaServiceUrl, payload);
+            var payload = new OllamaInputEmbeddingsDto(_ollamaModel, inputChunk);
+            var output = await _httpClientService.PostAsync<OllamaOutputEmbeddingsDto>(_ollamaServiceUrl, payload);
             var numbers = output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
             textToVectors.Add((inputChunk, numbers));
         }
@@ -26,8 +26,8 @@ public class SemanticVectorService : ISemanticVectorService
 
     public async Task<float[]> GetSemanticVector(string input)
     {
-        var payload = new OllamaInputDto(_ollamaModel, input);
-        var output = await _httpClientService.PostAsync<OllamaOutputDto>(_ollamaServiceUrl, payload);
+        var payload = new OllamaInputEmbeddingsDto(_ollamaModel, input);
+        var output = await _httpClientService.PostAsync<OllamaOutputEmbeddingsDto>(_ollamaServiceUrl, payload);
         return output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
     }
 }
