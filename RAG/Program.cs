@@ -1,4 +1,4 @@
-﻿PdfService pdfService = new PdfService("/home/damian/Documents/workfolder/RAG/RAG/monopoly instructions.pdf");
+﻿PdfService pdfService = new PdfService("./monopoly.pdf");
 var text = pdfService.ConvertTheDocumentToText();
 
 OverLayChunksService overLayChunksService = new OverLayChunksService(text);
