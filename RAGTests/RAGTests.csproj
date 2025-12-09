@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Docker.DotNet" Version="3.125.15" />
     <PackageReference Include="itext7" Version="9.4.0" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
