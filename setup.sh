@@ -12,9 +12,9 @@ docker run -d --gpus=all \
 echo "Waiting 5 seconds for Ollama to initialize..."
 sleep 5
 
-# Pull Phi3 model inside Ollama
-echo "Pulling Phi3 model..."
-docker exec -it ollama ollama pull phi3
+# Pull smollm model inside Ollama
+echo "Pulling smollm model..."
+docker exec -it ollama ollama pull smollm
 
 # ---- Qdrant setup ----
 echo "Starting Qdrant container..."
