@@ -1,11 +1,9 @@
-using Qdrant.Client.Grpc;
-
 public class PromptService : IPromptService
 {
-    private readonly IQdrantService _qdrantService;
+    private readonly IQdrantServiceSearch _qdrantService;
     private readonly ISemanticVectorService _semanticVectorService;
 
-    public PromptService(IQdrantService qdrantService, ISemanticVectorService semanticVectorService)
+    public PromptService(IQdrantServiceSearch qdrantService, ISemanticVectorService semanticVectorService)
     {
         _qdrantService = qdrantService;
         _semanticVectorService = semanticVectorService;

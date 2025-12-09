@@ -1,6 +1,6 @@
 using Qdrant.Client;
 using Qdrant.Client.Grpc;
-public class QdrantService : IQdrantService
+public class QdrantService : IQdrantService, IQdrantServiceSearch
 {
     private QdrantClient _qdrantClient;
     private readonly string _qdrantHost;
