@@ -10,14 +10,14 @@ public class OllamaServiceTests
     }
 
     [Fact]
-    public async Task OllamaService_DockerRunningTest()
+    public async Task OllamaServiceDockerRunningTest()
     {
         bool isRunning = await _dockerChecker.IsDockerRunning() && await _dockerChecker.IsContainerRunning("ollama");
         Assert.True(isRunning, "Ollama Docker container is not running. Please ensure it is up before running tests.");
     }
 
     [Fact]
-    public async Task GetOllamaResponse_BasicTest()
+    public async Task GetOllamaResponseBasicTest()
     {
         string prompt = "What is the capital of France?";
         var response = await _ollamaService.GetAnswer(prompt);
