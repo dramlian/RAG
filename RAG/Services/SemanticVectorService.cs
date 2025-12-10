@@ -16,9 +16,7 @@ public class SemanticVectorService : ISemanticVectorService
         var textToVectors = new List<(string, float[])>();
         foreach (var inputChunk in chunksPlainText)
         {
-            var payload = new OllamaInputEmbeddingsDto(_ollamaModel, inputChunk);
-            var output = await _httpClientService.PostAsync<OllamaOutputEmbeddingsDto>(_ollamaServiceUrl, payload);
-            var numbers = output?.data?.FirstOrDefault()?.embedding ?? Array.Empty<float>();
+            var numbers = await GetSemanticVector(inputChunk);
             textToVectors.Add((inputChunk, numbers));
         }
         return new QdrantDto(textToVectors);
